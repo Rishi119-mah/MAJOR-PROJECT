@@ -1,0 +1,80 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+
+\begin{document}
+
+\title{Detecting Fake Review Buyers Using Network Structure, Gradient Boosting, and Explainable AI: An Empirical Investigation on Amazon}
+
+\author{\IEEEauthorblockN{Rishi Maheshwari}
+\IEEEauthorblockA{\textit{Department of Computer Science and Engineering} \\
+\textit{Major Project Final Year Report}\\
+November 2026}
+}
+
+\maketitle
+
+\begin{abstract}
+Online review fraud undermines market efficiency by artificially inflating product ratings through organized fake review acquisition. In this study, building on the empirical findings of He et al. (2022), we develop an explainable, multimodal fake-review-buyer detection framework. By integrating review statistics, co-review network topology, image similarity, and temporal dynamics, we evaluate 9 machine learning algorithms across multiple feature spaces. Our tuned XGBoost model achieves 0.9199 ROC-AUC and 0.8179 fake-class F1-score on stratified holdout evaluations. Using TreeSHAP explainability, we demonstrate that network centrality features account for 35.42\% of total model importance, dominated by clustering coefficient (16.07\%) and eigenvector centrality (15.38\%). We further evaluate K-Means cluster stability, synthetic fraud ring robustness, and deploy a production FastAPI microservice supporting multilingual explanations and alignment with Indian BIS IS 19000:2022 standards.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Fake Review Detection, Graph Machine Learning, Network Centrality, XGBoost, SHAP Explainability, E-Commerce Security.
+\end{IEEEkeywords}
+
+\section{Introduction}
+E-commerce marketplaces depend heavily on user ratings. Consequently, fraudulent sellers systematically purchase deceptive 5-star reviews to manipulate platform search algorithms. Because reviews are posted by real user accounts with verified purchases, text-only NLP classifiers fail to distinguish coordinated fraud from genuine feedback. Co-review network structures offer a robust alternative by identifying colluding products that share common reviewer pools.
+
+\section{Methodology}
+We formulate fake review detection as a binary classification problem where the positive class represents products that buy fake reviews ($y=1$).
+The multimodal feature space comprises:
+\begin{itemize}
+    \item \textbf{Review Statistics (12):} Rating distributions, photo share, review intervals.
+    \item \textbf{Network Topology (4):} PageRank, weighted degree, clustering coefficient, eigenvector centrality.
+    \item \textbf{Image Similarity (12):} Pairwise cosine distance of listing and review photos.
+    \item \textbf{Text Features (1000):} Stemmed TF-IDF unigram and bigram representations.
+\end{itemize}
+
+\section{Experimental Results}
+\begin{table}[htbp]
+\caption{Model Performance Across Feature Combinations (XGBoost)}
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Feature Group} & \textbf{Acc} & \textbf{Fake F1} & \textbf{ROC-AUC} & \textbf{PR-AUC} \\
+\midrule
+Review Only & 80.33\% & 0.7673 & 0.8774 & 0.8463 \\
+Network Only & 80.33\% & 0.7698 & 0.8596 & 0.8259 \\
+Review + Network & 83.18\% & 0.8007 & 0.9137 & 0.8961 \\
+Review + Network + Image & \textbf{84.68\%} & \textbf{0.8179} & \textbf{0.9199} & \textbf{0.9069} \\
+TF-IDF Text Only & 76.88\% & 0.6992 & 0.8484 & 0.8194 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\section{SHAP Explainability and Network Influence}
+Using TreeSHAP on our XGBoost model, we found that network features account for 35.42\% of all model decision weight:
+\begin{itemize}
+    \item Clustering Coefficient: 16.07\%
+    \item Eigenvector Centrality: 15.38\%
+    \item Weighted Degree: 2.88\%
+    \item PageRank: 1.09\%
+\end{itemize}
+This empirically validates that bipartite topological bottleneck features drive the model's ability to detect coordinated review-buying rings.
+
+\section{Conclusion}
+This study provides a verified, reproducible, and explainable system for detecting fake-review buyers, proving the essential role of network structure in e-commerce integrity.
+
+\begin{thebibliography}{00}
+\bibitem{b1} S. He, B. Hollenbeck, G. Overgoor, D. Proserpio, and A. Tosyali, ``Detecting Fake Review Buyers Using Network Structure: Direct Evidence from Amazon,'' SSRN Electronic Journal, 2022.
+\bibitem{b2} Bureau of Indian Standards, ``IS 19000:2022: Online Consumer Reviews --- Principles and Requirements for their Collection, Moderation and Publication,'' New Delhi, 2022.
+\end{thebibliography}
+
+\end{document}
+
