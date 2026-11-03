@@ -51,7 +51,7 @@ export const Sidebar: React.FC = () => {
               <div className="flex flex-col min-w-0">
                 <span className="font-bold text-white tracking-tight truncate leading-tight">FraudShield ML</span>
                 <span className="text-[10px] text-slate-400 font-mono tracking-wider uppercase truncate">
-                  v2.1.0 • Antigravity
+                  v2.1.0 • Rishi Maheshwari
                 </span>
               </div>
             )}

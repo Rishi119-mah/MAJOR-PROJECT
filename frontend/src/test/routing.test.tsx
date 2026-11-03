@@ -32,7 +32,7 @@ describe('App Root and Navigation Flow', () => {
   it('renders application with sidebar and branding', () => {
     renderTestApp();
     expect(screen.getByText('FraudShield ML')).toBeInTheDocument();
-    expect(screen.getByText(/v2.1.0 • Antigravity/i)).toBeInTheDocument();
+    expect(screen.getByText(/v2.1.0 • Rishi Maheshwari/i)).toBeInTheDocument();
   });
 
   it('renders all nine navigation links in sidebar', () => {
