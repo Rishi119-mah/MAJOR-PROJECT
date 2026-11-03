@@ -9,6 +9,7 @@ Preserves clear distinction between model-predicted fake probabilities and groun
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -150,4 +151,79 @@ def run_isolation_forest_anomaly(
         logger.info("Isolation Forest vs Target Ground Truth:\n%s", cross_tab)
 
     return df_out
+
+
+def get_optimal_cluster_configuration(
+    sweep_path: Path | str | None = None,
+    selection_criterion: str = "max_silhouette",
+    dataset_identifier: str = "amazon_electronics_multimodal",
+) -> dict[str, Any]:
+    """Calculate the optimal clustering configuration from actual saved sweep results.
+
+    Returns a dictionary with nullable fields if missing, with zero hardcoded defaults.
+    """
+    if sweep_path is None:
+        target_path = EXPERIMENT_DIR / "KMEANS_SWEEP_METRICS.csv"
+    else:
+        target_path = Path(sweep_path)
+
+    if not target_path.exists():
+        logger.warning("K-Means sweep metrics file not found at %s", target_path)
+        return {
+            "available_k_values": [],
+            "selected_k": None,
+            "selection_criterion": selection_criterion,
+            "silhouette_score": None,
+            "davies_bouldin_score": None,
+            "calinski_harabasz_score": None,
+            "cluster_count": None,
+            "dataset_identifier": dataset_identifier,
+            "result_source": "unavailable",
+            "optimal_k": None,
+            "optimal_silhouette": None,
+        }
+
+    try:
+        df_sw = pd.read_csv(target_path)
+        if df_sw.empty or "k" not in df_sw.columns or "silhouette" not in df_sw.columns:
+            raise ValueError("K-Means sweep CSV is empty or missing required columns 'k' / 'silhouette'.")
+
+        available_k = [int(val) for val in df_sw["k"].dropna().tolist()]
+        opt_idx = df_sw["silhouette"].idxmax()
+        opt_row = df_sw.loc[opt_idx]
+
+        selected_k = int(opt_row["k"])
+        sil_score = round(float(opt_row["silhouette"]), 4)
+        db_score = round(float(opt_row["davies_bouldin"]), 4) if "davies_bouldin" in opt_row and pd.notnull(opt_row["davies_bouldin"]) else None
+        ch_score = round(float(opt_row["calinski_harabasz"]), 4) if "calinski_harabasz" in opt_row and pd.notnull(opt_row["calinski_harabasz"]) else None
+
+        return {
+            "available_k_values": available_k,
+            "selected_k": selected_k,
+            "selection_criterion": selection_criterion,
+            "silhouette_score": sil_score,
+            "davies_bouldin_score": db_score,
+            "calinski_harabasz_score": ch_score,
+            "cluster_count": selected_k,
+            "dataset_identifier": dataset_identifier,
+            "result_source": target_path.name,
+            "optimal_k": selected_k,
+            "optimal_silhouette": sil_score,
+        }
+    except Exception as exc:
+        logger.error("Failed to parse K-Means sweep metrics from %s: %s", target_path, exc)
+        return {
+            "available_k_values": [],
+            "selected_k": None,
+            "selection_criterion": selection_criterion,
+            "silhouette_score": None,
+            "davies_bouldin_score": None,
+            "calinski_harabasz_score": None,
+            "cluster_count": None,
+            "dataset_identifier": dataset_identifier,
+            "result_source": "unavailable",
+            "optimal_k": None,
+            "optimal_silhouette": None,
+        }
+
 

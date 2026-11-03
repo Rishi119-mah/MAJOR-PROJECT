@@ -1,0 +1,198 @@
+{
+  "status": "passed",
+  "total_tests": 37,
+  "passed": 37,
+  "failed": 0,
+  "skipped": 0,
+  "duration_seconds": 3.67,
+  "test_execution_date": "2026-11-03T05:03:59.695517+00:00",
+  "environment": "Python 3.14.6 \u2022 pytest 9.2.0 \u2022 Darwin",
+  "test_command": "pytest tests/ -v",
+  "tests": [
+    {
+      "nodeid": "tests/test_api.py::test_http_health",
+      "outcome": "passed",
+      "duration": 0.0035
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_datasets_summary",
+      "outcome": "passed",
+      "duration": 0.0104
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_models_metrics",
+      "outcome": "passed",
+      "duration": 0.0055
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_predict_valid_payload",
+      "outcome": "passed",
+      "duration": 0.0417
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_predict_28_features_multimodal",
+      "outcome": "passed",
+      "duration": 0.0116
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_predict_image_model_missing_image_features_rejects_422",
+      "outcome": "passed",
+      "duration": 0.0014
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_predict_review_only_12_features",
+      "outcome": "passed",
+      "duration": 0.0096
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_predict_network_only_4_features",
+      "outcome": "passed",
+      "duration": 0.0088
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_model_registry",
+      "outcome": "passed",
+      "duration": 0.0013
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_predict_missing_core_features_rejects_422",
+      "outcome": "passed",
+      "duration": 0.001
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_predict_invalid_rating_range_rejects_422",
+      "outcome": "passed",
+      "duration": 0.0011
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_predict_disallowed_model_rejects_400",
+      "outcome": "passed",
+      "duration": 0.001
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_product_details_protects_ground_truth",
+      "outcome": "passed",
+      "duration": 0.0067
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_product_not_found_returns_404",
+      "outcome": "passed",
+      "duration": 0.0013
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_clustering_summary",
+      "outcome": "passed",
+      "duration": 0.1027
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_predict_calibrated_model",
+      "outcome": "passed",
+      "duration": 0.0202
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_predict_all_registered_models",
+      "outcome": "passed",
+      "duration": 0.561
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_dashboard_overview",
+      "outcome": "passed",
+      "duration": 0.0086
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_products_list",
+      "outcome": "passed",
+      "duration": 0.0028
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_experiments_registry",
+      "outcome": "passed",
+      "duration": 0.0026
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_explainability_global",
+      "outcome": "passed",
+      "duration": 0.002
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_clustering_details",
+      "outcome": "passed",
+      "duration": 0.0049
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_network_endpoints",
+      "outcome": "passed",
+      "duration": 0.0151
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_system_environment",
+      "outcome": "passed",
+      "duration": 0.0208
+    },
+    {
+      "nodeid": "tests/test_api.py::test_http_system_test_report",
+      "outcome": "passed",
+      "duration": 0.0019
+    },
+    {
+      "nodeid": "tests/test_pipeline.py::test_deterministic_fixture_validation",
+      "outcome": "passed",
+      "duration": 0.0015
+    },
+    {
+      "nodeid": "tests/test_pipeline.py::test_metrics_computation",
+      "outcome": "passed",
+      "duration": 0.0071
+    },
+    {
+      "nodeid": "tests/test_pipeline.py::test_risk_score_and_boundaries",
+      "outcome": "passed",
+      "duration": 0.0001
+    },
+    {
+      "nodeid": "tests/test_pipeline.py::test_probability_calibration_evaluation",
+      "outcome": "passed",
+      "duration": 0.1154
+    },
+    {
+      "nodeid": "tests/test_pipeline.py::test_bipartite_graph_collision_prevention",
+      "outcome": "passed",
+      "duration": 0.0003
+    },
+    {
+      "nodeid": "tests/test_pipeline.py::test_trainable_graphsage_neural_network",
+      "outcome": "passed",
+      "duration": 0.0051
+    },
+    {
+      "nodeid": "tests/test_pipeline.py::test_node2vec_skipgram_embeddings",
+      "outcome": "passed",
+      "duration": 0.2136
+    },
+    {
+      "nodeid": "tests/test_pipeline.py::test_real_dataset_loading_integration",
+      "outcome": "passed",
+      "duration": 0.0218
+    },
+    {
+      "nodeid": "tests/test_pipeline.py::test_ucsd_dataset_loading_integration",
+      "outcome": "passed",
+      "duration": 0.0477
+    },
+    {
+      "nodeid": "tests/test_pipeline.py::test_standalone_demo_workflow",
+      "outcome": "passed",
+      "duration": 0.2369
+    },
+    {
+      "nodeid": "tests/test_pipeline.py::test_holdout_isolation_regression",
+      "outcome": "passed",
+      "duration": 0.2289
+    },
+    {
+      "nodeid": "tests/test_pipeline.py::test_calibration_isolation_and_persistence",
+      "outcome": "passed",
+      "duration": 0.1126
+    }
+  ]
+}

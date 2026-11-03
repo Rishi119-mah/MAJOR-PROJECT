@@ -62,6 +62,10 @@ def compute_all_metrics(
     cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
     tn, fp, fn, tp = cm.ravel()
 
+    # Specificity = TN / (TN + FP), FPR = FP / (FP + TN)
+    specificity = float(tn / (tn + fp)) if (tn + fp) > 0 else 0.0
+    fpr = float(fp / (fp + tn)) if (fp + tn) > 0 else 0.0
+
     results: dict[str, Any] = {
         # Overall
         "accuracy": float(accuracy_score(y_true, y_pred)),
@@ -76,8 +80,13 @@ def compute_all_metrics(
         # Aggregated F1
         "macro_f1": float(f1_score(y_true, y_pred, average="macro", zero_division=0)),
         "weighted_f1": float(f1_score(y_true, y_pred, average="weighted", zero_division=0)),
-        # Specificity = TN / (TN + FP)
-        "specificity": float(tn / (tn + fp)) if (tn + fp) > 0 else 0.0,
+        # Specificity & False Positive Rate
+        "specificity": specificity,
+        "false_positive_rate": fpr,
+        "tp": int(tp),
+        "tn": int(tn),
+        "fp": int(fp),
+        "fn": int(fn),
         # Confusion matrix
         "confusion_matrix": cm.tolist(),
     }
@@ -88,10 +97,26 @@ def compute_all_metrics(
         results["roc_auc"] = float(roc_auc_score(y_true, y_prob))
         results["pr_auc"] = float(average_precision_score(y_true, y_prob))
         results["brier_score"] = float(brier_score_loss(y_true, y_prob))
+
+        # Expected Calibration Error (ECE) across 10 uniform bins
+        bins = np.linspace(0.0, 1.0, 11)
+        bin_indices = np.digitize(y_prob, bins) - 1
+        bin_indices = np.clip(bin_indices, 0, 9)
+        ece = 0.0
+        n_total = len(y_true)
+        for b in range(10):
+            mask = bin_indices == b
+            if np.any(mask):
+                prop_b = np.sum(mask) / n_total
+                acc_b = np.mean(y_true[mask])
+                conf_b = np.mean(y_prob[mask])
+                ece += prop_b * np.abs(acc_b - conf_b)
+        results["expected_calibration_error"] = float(ece)
     else:
         results["roc_auc"] = None
         results["pr_auc"] = None
         results["brier_score"] = None
+        results["expected_calibration_error"] = None
 
     return results
 
