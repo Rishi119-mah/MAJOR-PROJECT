@@ -4,7 +4,6 @@ import { describe, it, expect } from 'vitest';
 import { RiskBadge } from '../components/common/RiskBadge';
 import { CircularRiskScore } from '../components/common/CircularRiskScore';
 import { StatCard } from '../components/common/StatCard';
-import { translations } from '../i18n/translations';
 
 describe('Frontend UI Components', () => {
   it('renders RiskBadge correctly for all three tiers', () => {
@@ -39,16 +38,4 @@ describe('Frontend UI Components', () => {
     expect(screen.getByText('3327')).toBeInTheDocument();
     expect(screen.getByText('Verified')).toBeInTheDocument();
   });
-
-  it('contains consistent translation dictionaries for EN, HI, and Hinglish', () => {
-    const keys = Object.keys(translations.en);
-    expect(keys.length).toBeGreaterThan(15);
-
-    // Verify all keys exist in Hindi and Hinglish
-    keys.forEach((key) => {
-      expect(translations.hi[key]).toBeDefined();
-      expect(translations.hinglish[key]).toBeDefined();
-    });
-  });
 });
-

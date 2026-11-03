@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Capture end-to-end full-page screenshots of all 9 full-stack application pages.
+Capture end-to-end full-page screenshots of the 4 simplified application pages.
 Runs headless Chrome with virtual-time-budget to ensure full React hydration and chart rendering.
 """
 
@@ -13,20 +13,15 @@ OUTPUT_DIR = Path("outputs/screenshots")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 PAGES = [
-    ("01_dashboard.png", "http://127.0.0.1:5174/dashboard"),
-    ("02_product_checker.png", "http://127.0.0.1:5174/product-checker"),
-    ("03_model_comparison.png", "http://127.0.0.1:5174/model-comparison"),
-    ("04_network_explorer.png", "http://127.0.0.1:5174/network-explorer"),
-    ("05_clustering.png", "http://127.0.0.1:5174/clustering"),
-    ("06_explainability.png", "http://127.0.0.1:5174/explainability"),
-    ("07_experiments.png", "http://127.0.0.1:5174/experiments"),
-    ("08_reports.png", "http://127.0.0.1:5174/reports"),
-    ("09_settings.png", "http://127.0.0.1:5174/settings"),
+    ("01_dashboard.png", "http://127.0.0.1:5173/dashboard"),
+    ("02_product_checker.png", "http://127.0.0.1:5173/product-checker"),
+    ("03_model_analysis.png", "http://127.0.0.1:5173/model-analysis"),
+    ("04_network_analysis.png", "http://127.0.0.1:5173/network-analysis"),
 ]
 
 def main():
     print("=" * 60)
-    print("CAPTURING APPLICATION SCREENSHOTS FOR ALL 9 PAGES")
+    print("CAPTURING APPLICATION SCREENSHOTS FOR 4 SIMPLIFIED PAGES")
     print("=" * 60)
 
     for filename, url in PAGES:

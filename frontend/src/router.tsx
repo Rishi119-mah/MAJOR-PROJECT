@@ -3,13 +3,8 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
 import { DashboardPage } from './pages/Dashboard';
 import { ProductCheckerPage } from './pages/ProductChecker';
-import { ModelComparisonPage } from './pages/ModelComparison';
-import { NetworkExplorerPage } from './pages/NetworkExplorer';
-import { ClusteringPage } from './pages/Clustering';
-import { ExplainabilityPage } from './pages/Explainability';
-import { ExperimentsPage } from './pages/Experiments';
-import { ReportsPage } from './pages/Reports';
-import { SettingsPage } from './pages/Settings';
+import { ModelAnalysisPage } from './pages/ModelAnalysis';
+import { NetworkAnalysisPage } from './pages/NetworkAnalysis';
 
 export const routes = [
   {
@@ -29,32 +24,41 @@ export const routes = [
         element: <ProductCheckerPage />,
       },
       {
-        path: 'model-comparison',
-        element: <ModelComparisonPage />,
+        path: 'model-analysis',
+        element: <ModelAnalysisPage />,
       },
       {
-        path: 'network-explorer',
-        element: <NetworkExplorerPage />,
+        path: 'network-analysis',
+        element: <NetworkAnalysisPage />,
+      },
+      // Legacy redirects to maintain compatibility
+      {
+        path: 'model-comparison',
+        element: <Navigate to="/model-analysis" replace />,
       },
       {
         path: 'clustering',
-        element: <ClusteringPage />,
+        element: <Navigate to="/model-analysis" replace />,
       },
       {
         path: 'explainability',
-        element: <ExplainabilityPage />,
+        element: <Navigate to="/model-analysis" replace />,
+      },
+      {
+        path: 'network-explorer',
+        element: <Navigate to="/network-analysis" replace />,
       },
       {
         path: 'experiments',
-        element: <ExperimentsPage />,
+        element: <Navigate to="/model-analysis" replace />,
       },
       {
         path: 'reports',
-        element: <ReportsPage />,
+        element: <Navigate to="/dashboard" replace />,
       },
       {
         path: 'settings',
-        element: <SettingsPage />,
+        element: <Navigate to="/dashboard" replace />,
       },
       {
         path: '*',

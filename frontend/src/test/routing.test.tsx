@@ -29,30 +29,36 @@ const renderTestApp = (initialRoute = '/dashboard') => {
 };
 
 describe('App Root and Navigation Flow', () => {
-  it('renders application with sidebar and branding', () => {
+  it('renders application with sidebar and student developer branding', () => {
     renderTestApp();
     expect(screen.getByText('FraudShield ML')).toBeInTheDocument();
     expect(screen.getByText(/v2.1.0 • Rishi Maheshwari/i)).toBeInTheDocument();
   });
 
-  it('renders all nine navigation links in sidebar', () => {
+  it('renders exactly the four core navigation links in sidebar', () => {
     renderTestApp();
-    expect(screen.getAllByText('Overview Dashboard').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText('Dashboard')).toBeInTheDocument();
     expect(screen.getByText('Product Checker')).toBeInTheDocument();
-    expect(screen.getByText('Model Comparison')).toBeInTheDocument();
-    expect(screen.getByText('Network Explorer')).toBeInTheDocument();
-    expect(screen.getByText('Clustering Analysis')).toBeInTheDocument();
-    expect(screen.getByText('Explainability (SHAP)')).toBeInTheDocument();
-    expect(screen.getByText('Research Experiments')).toBeInTheDocument();
-    expect(screen.getByText('Reports & Exports')).toBeInTheDocument();
-    expect(screen.getByText('Settings & Status')).toBeInTheDocument();
+    expect(screen.getByText('Model Analysis')).toBeInTheDocument();
+    expect(screen.getByText('Network Analysis')).toBeInTheDocument();
   });
 
-  it('displays research and demo mode toggle', () => {
-    renderTestApp();
-    const researchButtons = screen.getAllByText(/Research Mode/i);
-    expect(researchButtons.length).toBeGreaterThanOrEqual(1);
-    const demoButtons = screen.getAllByText(/Demo Mode/i);
-    expect(demoButtons.length).toBeGreaterThanOrEqual(1);
+  it('navigates cleanly to Product Checker', () => {
+    renderTestApp('/product-checker');
+    expect(screen.getByText('Product Review Risk Checker')).toBeInTheDocument();
+    expect(screen.getByText('Check Product')).toBeInTheDocument();
+  });
+
+  it('navigates cleanly to Model Analysis', () => {
+    renderTestApp('/model-analysis');
+    expect(screen.getByText('Machine Learning & Anomaly Analysis')).toBeInTheDocument();
+    expect(screen.getByText('Model Comparison')).toBeInTheDocument();
+    expect(screen.getByText('Clustering')).toBeInTheDocument();
+    expect(screen.getByText('SHAP Explainability')).toBeInTheDocument();
+  });
+
+  it('navigates cleanly to Network Analysis', () => {
+    renderTestApp('/network-analysis');
+    expect(screen.getByText('Reviewer-Product Network Analysis')).toBeInTheDocument();
   });
 });

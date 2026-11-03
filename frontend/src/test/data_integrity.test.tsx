@@ -1,10 +1,9 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { DashboardPage } from '../pages/Dashboard';
 import { ProductCheckerPage } from '../pages/ProductChecker';
-import { ExplainabilityPage } from '../pages/Explainability';
-import { ReportsPage } from '../pages/Reports';
+import { ModelAnalysisPage } from '../pages/ModelAnalysis';
 import { AppProvider } from '../context/AppContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -20,7 +19,7 @@ const createWrapper = () => {
 };
 
 describe('Data Integrity & Dynamic Binding Verification', () => {
-  it('Dashboard renders dynamic holdout protocol and top models without static fake numbers', async () => {
+  it('Dashboard renders total products, fake, genuine, and model F1 without hardcoded numbers', async () => {
     const Wrapper = createWrapper();
     render(
       <Wrapper>
@@ -28,53 +27,17 @@ describe('Data Integrity & Dynamic Binding Verification', () => {
       </Wrapper>
     );
 
-    // Wait for Dashboard to render
     await waitFor(() => {
-      expect(screen.getByText(/Executive Intelligence Overview/i)).toBeInTheDocument();
+      expect(screen.getByText(/Total Products/i)).toBeInTheDocument();
+      expect(screen.getByText(/Fake-Labelled/i)).toBeInTheDocument();
+      expect(screen.getByText(/Genuine Products/i)).toBeInTheDocument();
+      expect(screen.getByText(/Best Model F1-Score/i)).toBeInTheDocument();
     });
 
-    // Check that holdout test protocol badge is rendered
-    expect(screen.getAllByText(/Holdout/i).length).toBeGreaterThan(0);
-    // Check that LightGBM (best holdout model) or XGBoost appears
-    expect(screen.getAllByText(/XGBoost|LightGBM/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Feature Modality Progression/i)).toBeInTheDocument();
   });
 
-  it('Explainability page dynamically renders modality breakdown from backend API', async () => {
-    const Wrapper = createWrapper();
-    render(
-      <Wrapper>
-        <ExplainabilityPage />
-      </Wrapper>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText(/TreeSHAP Explainability/i)).toBeInTheDocument();
-    });
-
-    // Verify presence of modalities
-    expect(screen.getAllByText(/Network Centralit/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Review Behavior/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Image Similarit/i).length).toBeGreaterThan(0);
-  });
-
-  it('Reports page renders dynamic holdout benchmarks and export option', async () => {
-    const Wrapper = createWrapper();
-    render(
-      <Wrapper>
-        <ReportsPage />
-      </Wrapper>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText(/Executive Report Generator & Exports/i)).toBeInTheDocument();
-    });
-
-    // Verification of holdout split protocol label in document view
-    expect(screen.getByText(/Untouched 20% Holdout Split/i)).toBeInTheDocument();
-    expect(screen.getByText(/Print PDF Report/i)).toBeInTheDocument();
-  });
-
-  it('Product Checker contains fetch button to prevent stale product submissions', async () => {
+  it('Product Checker renders Product ID input, model selector, and check button', async () => {
     const Wrapper = createWrapper();
     render(
       <Wrapper>
@@ -83,12 +46,27 @@ describe('Data Integrity & Dynamic Binding Verification', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/Product-Level Fake Review Risk Checker/i)).toBeInTheDocument();
+      expect(screen.getByText(/Product Review Risk Checker/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Check Product/i })).toBeInTheDocument();
     });
 
-    // Check for the Fetch button
-    const fetchBtn = screen.getByRole('button', { name: /fetch/i });
-    expect(fetchBtn).toBeInTheDocument();
+    expect(screen.getByLabelText(/Product ID/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Evaluation Model/i)).toBeInTheDocument();
+  });
+
+  it('Model Analysis renders all three unified tabs: comparison, clustering, shap', async () => {
+    const Wrapper = createWrapper();
+    render(
+      <Wrapper>
+        <ModelAnalysisPage />
+      </Wrapper>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Machine Learning & Anomaly Analysis')).toBeInTheDocument();
+      expect(screen.getAllByText(/Model Comparison/i).length).toBeGreaterThanOrEqual(1);
+      expect(screen.getAllByText(/Clustering/i).length).toBeGreaterThanOrEqual(1);
+      expect(screen.getAllByText(/SHAP Explainability/i).length).toBeGreaterThanOrEqual(1);
+    });
   });
 });
-
