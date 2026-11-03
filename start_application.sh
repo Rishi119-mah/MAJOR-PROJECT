@@ -13,6 +13,9 @@ echo "  FastAPI Backend (8000) + React/Vite Dashboard (5173)    "
 echo "=========================================================="
 
 # 1. Activate Python virtual environment
+export MPLCONFIGDIR="/tmp/mpl"
+mkdir -p /tmp/mpl
+
 if [ -d "venv" ]; then
     source venv/bin/activate
     echo "✓ Activated Python virtual environment (venv)"
@@ -22,7 +25,7 @@ fi
 
 # 2. Start FastAPI Backend in background
 echo "Starting FastAPI Backend on http://localhost:8000..."
-uvicorn src.api.main:app --host 0.0.0.0 --port 8000 &
+python3 -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000 &
 BACKEND_PID=$!
 
 # Trap signals to ensure clean shutdown of both processes
